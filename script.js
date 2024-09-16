@@ -27,8 +27,8 @@ function gameLogic(p1, p2) {
     else if (p1 === 'scissor' && p2 === 'paper')
         alert("You Win");
     else
-        alert("You Lose")
+        alert("You Lose");
 }
 
-gameLogic(getHumanChoice(), getComputerChoice());
-
+for (i = 0; i < 5; i++)
+    gameLogic(getHumanChoice(), getComputerChoice());
