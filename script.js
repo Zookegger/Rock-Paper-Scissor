@@ -27,6 +27,13 @@ computerScoreBoard.innerText = "Computer: 0";
 scoreBoard.appendChild(playerScoreBoard);
 scoreBoard.appendChild(computerScoreBoard);
 
+// Disable buttons
+function disableButtons() {
+    rockButton.disabled = true;
+    paperButton.disabled = true;
+    scissorButton.disabled = true;
+}
+
 // Funtion to get random computer choice
 function getComputerChoice() {
     const answer = ['rock', 'paper', 'scissor'];
@@ -42,18 +49,24 @@ function gameLogic(p1, p2) {
     else if (p1 === p2)
         return 0;
     else
-        return -1;
+    return -1;
 }
+
+let rounds = 0;
 
 function updateScore() {
     playerScoreBoard.innerText = `Player: ${playerScore}`;
     computerScoreBoard.innerText = `Computer: ${computerScore}`;
 }
 
-
 function playRound(playerChoice) {
     const computerChoice = getComputerChoice();
     let result = gameLogic(playerChoice, computerChoice);
+
+    rounds++;
+
+    if (rounds === 5)
+        disableButtons();
 
     console.log(playerChoice);
     console.log(computerChoice);
@@ -67,14 +80,34 @@ function playRound(playerChoice) {
     } else {
         console.log("It's a tie!");
     } 
-    
+
     updateScore();
+    if (rounds === 5) {
+        const gameResults = document.createElement("div");
+        if (playerScore > computerScore)
+            gameResults.innerText = "You Won";
+        else if (playerScore < computerScore)
+            gameResults.innerText = "You lose";
+        else 
+            gameResults.innerText = "Tied";
+        body.appendChild(gameResults);
+    }
 }
 
 // Event listeners for player's button input
-rockButton.addEventListener('click', () => playRound("rock"));
-paperButton.addEventListener('click', () => playRound("paper"));
-scissorButton.addEventListener('click', () => playRound("scissor"));
+rockButton.addEventListener('click', () => {
+    if (rounds < 5)
+        playRound("rock");
+});
+paperButton.addEventListener('click', () => {
+    if (rounds < 5)
+        playRound("paper");
+});
+
+scissorButton.addEventListener('click', () => {
+    if (rounds < 5)
+        playRound("scissor");
+});
 
 // Add button and scoreboard to html body
 const body = document.querySelector("body");
